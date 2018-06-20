@@ -8,12 +8,11 @@ module.exports = cccpurge
 
 function cccpurge (app, opts, callback) {
   assert(isChooApp(app), 'cccpurge: app should be an instance of a choo app')
-  if (typeof opts === 'function') {
-    callback = opts
-    opts = {}
-  }
-
-  assert(callback, 'cccpurge: callback should be a function')
+  assert(typeof opts === 'object', 'cccpurge: opts should be an object')
+  assert(typeof callback === 'function', 'cccpurge: callback should be a function')
+  assert(typeof opts.zone === 'string', 'cccpurge: opts.zone should be a string')
+  assert(typeof opts.email === 'string', 'cccpurge: opts.email should be a string')
+  assert(typeof opts.key === 'string', 'cccpurge: opts.key should be a string')
 
   var router = app.router.router
   map(Object.keys(getAllRoutes(router)), resolveRoute, function (err, routes) {
@@ -48,10 +47,6 @@ function cccpurge (app, opts, callback) {
   // purge cloudflare cache for given urls
   // (str, fn) -> void
   function purgeUrls (urls, done) {
-    assert(typeof opts.zone === 'string', 'cccpurge: opts.zone should be a string')
-    assert(typeof opts.email === 'string', 'cccpurge: opts.email should be a string')
-    assert(typeof opts.key === 'string', 'cccpurge: opts.key should be a string')
-
     var req = https.request({
       hostname: 'api.cloudflare.com',
       port: 443,
