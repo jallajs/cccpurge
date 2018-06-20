@@ -56,7 +56,7 @@ function cccpurge (app, opts, callback) {
   // (str|obj) -> any
   function resolveRoot (route) {
     if (!route || !opts.root) {
-      return route.replace(/\/$/, '')
+      return typeof route === 'string' ? route.replace(/\/$/, '') : route
     }
 
     if (route.url) {
