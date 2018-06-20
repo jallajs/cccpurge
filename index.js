@@ -36,7 +36,7 @@ function cccpurge (app, opts, callback) {
   // resolve route relative to root
   // (str|obj) -> any
   function resolveRoot (route) {
-    if (!opts.root) return route
+    if (!route || !opts.root) return route
     if (route.url) {
       route.url = url.resolve(opts.root, route.url)
       return route
