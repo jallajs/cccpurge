@@ -1,0 +1,34 @@
+{
+  "name": "cccpurge",
+  "version": "1.0.0",
+  "description": "Choo Cloudflare Cache Purge – purge all routes served by choo app",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && dependency-check ./package.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jallajs/cccpurge.git"
+  },
+  "keywords": [
+    "choo",
+    "cloudflare",
+    "jalla",
+    "cache",
+    "purge"
+  ],
+  "author": "code and conspire",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jallajs/cccpurge/issues"
+  },
+  "homepage": "https://github.com/jallajs/cccpurge#readme",
+  "dependencies": {
+    "async": "^2.6.1",
+    "wayfarer": "^6.6.4"
+  },
+  "devDependencies": {
+    "dependency-check": "^3.1.0",
+    "standard": "^11.0.1"
+  }
+}
