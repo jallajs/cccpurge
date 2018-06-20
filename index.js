@@ -55,12 +55,16 @@ function cccpurge (app, opts, callback) {
   // resolve route relative to root
   // (str|obj) -> any
   function resolveRoot (route) {
-    if (!route || !opts.root) return route
+    if (!route || !opts.root) {
+      return route.replace(/\/$/, '')
+    }
+
     if (route.url) {
-      route.url = url.resolve(opts.root, route.url)
+      route.url = url.resolve(opts.root, route.url).replace(/\/$/, '')
       return route
     }
-    return url.resolve(opts.root, route)
+
+    return url.resolve(opts.root, route).replace(/\/$/, '')
   }
 
   // purge cloudflare cache for given urls
