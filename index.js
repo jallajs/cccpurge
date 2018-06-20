@@ -25,7 +25,7 @@ function cccpurge (app, opts, callback) {
   // handle route with partials
   // (str, fn) -> void
   function resolveRoute (route, done) {
-    if (!/\/:/.test(route)) return resolveRoot(route)
+    if (!/\/:/.test(route)) return done(null, resolveRoot(route))
     assert(opts.resolve, 'cccpurge: opts.resolve should be a function')
     opts.resolve(route, function (err, routes) {
       if (!Array.isArray(routes)) routes = [routes]
