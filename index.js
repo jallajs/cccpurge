@@ -2,6 +2,7 @@ var url = require('url')
 var https = require('https')
 var assert = require('assert')
 var map = require('async/map')
+var parallel = require('async/parallel')
 var getAllRoutes = require('wayfarer/get-all-routes')
 
 module.exports = cccpurge
@@ -14,12 +15,30 @@ function cccpurge (app, opts, callback) {
   assert(typeof opts.email === 'string', 'cccpurge: opts.email should be a string')
   assert(typeof opts.key === 'string', 'cccpurge: opts.key should be a string')
 
+  var limit = opts.limit || 30
   var router = app.router.router
+
   map(Object.keys(getAllRoutes(router)), resolveRoute, function (err, routes) {
     if (err) return callback(err)
-    purgeUrls(routes.reduce(function flatten (flat, route) {
+
+    // flatten list and filter out any falsy values
+    routes = routes.reduce(function flatten (flat, route) {
       return flat.concat(route)
-    }, []).filter(Boolean), callback)
+    }, []).filter(Boolean)
+
+    if (routes.length <= limit) {
+      purgeUrls(routes, callback)
+    } else {
+      var batches = []
+      while (routes.length) {
+        batches.push(routes.splice(0, limit))
+      }
+
+      // run purge in parallel with `limit` urls per job
+      parallel(batches.map(function (batch) {
+        return purgeUrls.bind(undefined, batch)
+      }), callback)
+    }
   })
 
   // handle route with partials

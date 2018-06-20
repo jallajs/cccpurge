@@ -62,6 +62,9 @@ function resolve (route, done) {
 }
 ```
 
+### Limit
+Cloudinary has a limit of maximum 30 urls per call to the purge endpoint. We respect that limit but it can be overridden by setting `opts.limit` to any number. Requests are made in parallel with a miximum of `limit` urls per request.
+
 [choo]: https://github.com/choojs/choo
 [prismic]: https://prismic.io
 
