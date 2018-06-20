@@ -14,12 +14,12 @@ You'll need to get your Cloudflare `Zone ID`, it's on the dashboard overview whe
 
 var cccpurge = require('cccpurge')
 
-ccpurge(require('./index'), {
+cccpurge(require('./index'), {
   root: 'https://www.my-blog.com',
   email: 'foo@my-blog.com',
   zone: '7sef78we7hwhefw3hri3uhriu32rwehf',
   key: '0046ffew5f560675hny5765r7gre6005reg05'
-}, done)
+}, console.log)
 ```
 
 ### Dynamic routes
@@ -39,7 +39,7 @@ var opts = {
   key: '0046ffew5f560675hny5765r7gre6005reg05'
 }
 
-ccpurge(app, opts, done)
+cccpurge(app, opts, done)
 
 function done (err, response) {
   if (err) console.error(err)
@@ -48,7 +48,7 @@ function done (err, response) {
 }
 
 function resolve (route, done) {
-  // only pother purging posts
+  // only bother purging posts
   if (route !== '/posts/:post') return done(null)
 
   // fetch posts from prismic api
@@ -61,8 +61,6 @@ function resolve (route, done) {
   }).catch(done)
 }
 ```
-
-## Options
 
 [choo]: https://github.com/choojs/choo
 [prismic]: https://prismic.io
