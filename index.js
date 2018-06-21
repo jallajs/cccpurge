@@ -24,7 +24,7 @@ function cccpurge (app, opts, callback) {
     // flatten list and filter out any falsy values
     routes = routes.reduce(function flatten (flat, route) {
       return flat.concat(route)
-    }, []).filter(Boolean)
+    }, Array.isArray(opts.urls) ? opts.urls : [opts.urls]).filter(Boolean)
 
     if (routes.length <= limit) {
       purgeUrls(routes, callback)
@@ -73,7 +73,7 @@ function cccpurge (app, opts, callback) {
     var req = https.request({
       hostname: 'api.cloudflare.com',
       port: 443,
-      path: `/client/v4/zones/${opts.zone}/purge_cache`,
+      path: '/client/v4/zones/' + opts.zone + '/purge_cache',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

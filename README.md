@@ -23,7 +23,7 @@ cccpurge(require('./index'), {
 ```
 
 ### Dynamic routes
-Dynamics routes (wildcards/params) are supported out of the box but you'll have to supply a function that resolves them to actual urls. The resolve function is given the route (e.g. `/posts/:post`) and a callback. How you resolve `/posts/:post` to `/post/my-first-post` is completely up to you. Here's an example using [Prismic][prismic].
+Dynamics routes (wildcards/params) are supported but you'll have to supply a function that resolves them to actual urls. The resolve function is given the route (e.g. `/posts/:post`) and a callback. How you resolve `/posts/:post` to e.g. `/post/my-first-post` is completely up to you. Here's an example using [Prismic][prismic].
 
 ```javascript
 #!/usr/bin/env node
@@ -64,6 +64,17 @@ function resolve (route, done) {
 
 ### Limit
 Cloudinary has a limit of maximum 30 urls per call to the purge endpoint. We respect that limit but it can be overridden by setting `opts.limit` to any number. Requests are made in parallel with a miximum of `limit` urls per request.
+
+### Options
+- __opts.limit:__ default: `30`. Number of urls submited per request.
+- __opts.urls:__ default: `[]`. List of urls (other than routes) you want purged.
+- __opts.zone:__ Cloudinary Zone ID.
+- __opts.email:__ Cloudinary account email address.
+- __opts.key:__ Cloudinary API Key.
+- __opts.resolve:__ Function which resolves dynamic routes to urls.
+
+## License
+MIT
 
 [choo]: https://github.com/choojs/choo
 [prismic]: https://prismic.io
