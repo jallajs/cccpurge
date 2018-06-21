@@ -22,9 +22,8 @@ function cccpurge (app, opts, callback) {
     if (err) return callback(err)
 
     // flatten list and filter out any falsy values
-    routes = routes.reduce(function flatten (flat, route) {
-      return flat.concat(route)
-    }, Array.isArray(opts.urls) ? opts.urls : [opts.urls]).filter(Boolean)
+    var initial = Array.isArray(opts.urls) ? opts.urls : [opts.urls]
+    routes = flatten(routes, initial).filter(Boolean).map(resolveRoot)
 
     if (routes.length <= limit) {
       purgeUrls(routes, callback)
@@ -44,12 +43,9 @@ function cccpurge (app, opts, callback) {
   // handle route with partials
   // (str, fn) -> void
   function resolveRoute (route, done) {
-    if (!/\/:/.test(route)) return done(null, resolveRoot(route))
+    if (!/\/:/.test(route)) return done(null, route)
     assert(opts.resolve, 'cccpurge: opts.resolve should be a function')
-    opts.resolve(route, function (err, routes) {
-      if (!Array.isArray(routes)) routes = [routes]
-      done(err, routes.map(resolveRoot))
-    })
+    opts.resolve(route, done)
   }
 
   // resolve route relative to root
@@ -104,4 +100,13 @@ function isChooApp (app) {
     app.router &&
     app.router.router &&
     app.router.router._trie)
+}
+
+// flatten array
+// (arr, initial?) -> arr
+function flatten (arr, initial) {
+  initial = initial || []
+  return arr.reduce(function (flat, value) {
+    return flat.concat(value)
+  }, initial)
 }
