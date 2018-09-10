@@ -45,7 +45,7 @@ function cccpurge (app, opts, callback) {
   function resolveRoute (route, done) {
     if (!/\/:/.test(route)) return done(null, route)
     assert(opts.resolve, 'cccpurge: opts.resolve should be a function')
-    opts.resolve(route, done)
+    opts.resolve(route.replace(/:$/, '*'), done)
   }
 
   // resolve route relative to root
