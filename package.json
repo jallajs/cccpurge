@@ -1,6 +1,6 @@
 {
   "name": "cccpurge",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "Choo Cloudflare Cache Purge – purge all routes served by choo app",
   "main": "index.js",
   "scripts": {
